@@ -14,6 +14,11 @@
 		4F302FED17685C19007788FA /* IADocument.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F302FEC17685C19007788FA /* IADocument.m */; };
 		4F302FF017685C19007788FA /* IADocument.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4F302FEE17685C19007788FA /* IADocument.xib */; };
 		4F302FF317685C1A007788FA /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4F302FF117685C1A007788FA /* MainMenu.xib */; };
+		4F302FFA17685C2A007788FA /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4F302FF917685C2A007788FA /* OpenGL.framework */; };
+		4F3030021768CB4D007788FA /* newreflect3-src.png in Resources */ = {isa = PBXBuildFile; fileRef = 4F3030001768CB4D007788FA /* newreflect3-src.png */; };
+		4F3030031768CB4D007788FA /* newreflect3.png in Resources */ = {isa = PBXBuildFile; fileRef = 4F3030011768CB4D007788FA /* newreflect3.png */; };
+		4F303005176A01D8007788FA /* Quartz.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4F303004176A01D8007788FA /* Quartz.framework */; };
+		4F3C37501771DE66000A2691 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4F3C374F1771DE66000A2691 /* CoreGraphics.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -31,6 +36,12 @@
 		4F302FEC17685C19007788FA /* IADocument.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = IADocument.m; sourceTree = "<group>"; };
 		4F302FEF17685C19007788FA /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/IADocument.xib; sourceTree = "<group>"; };
 		4F302FF217685C1A007788FA /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/MainMenu.xib; sourceTree = "<group>"; };
+		4F302FF917685C2A007788FA /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = System/Library/Frameworks/OpenGL.framework; sourceTree = SDKROOT; };
+		4F302FFB17685C37007788FA /* GLUT.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLUT.framework; path = System/Library/Frameworks/GLUT.framework; sourceTree = SDKROOT; };
+		4F3030001768CB4D007788FA /* newreflect3-src.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "newreflect3-src.png"; sourceTree = "<group>"; };
+		4F3030011768CB4D007788FA /* newreflect3.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = newreflect3.png; sourceTree = "<group>"; };
+		4F303004176A01D8007788FA /* Quartz.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Quartz.framework; path = System/Library/Frameworks/Quartz.framework; sourceTree = SDKROOT; };
+		4F3C374F1771DE66000A2691 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -38,6 +49,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4F3C37501771DE66000A2691 /* CoreGraphics.framework in Frameworks */,
+				4F303005176A01D8007788FA /* Quartz.framework in Frameworks */,
+				4F302FFA17685C2A007788FA /* OpenGL.framework in Frameworks */,
 				4F302FDA17685C19007788FA /* Cocoa.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -65,6 +79,10 @@
 		4F302FD817685C19007788FA /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				4F3C374F1771DE66000A2691 /* CoreGraphics.framework */,
+				4F303004176A01D8007788FA /* Quartz.framework */,
+				4F302FFB17685C37007788FA /* GLUT.framework */,
+				4F302FF917685C2A007788FA /* OpenGL.framework */,
 				4F302FD917685C19007788FA /* Cocoa.framework */,
 				4F302FDB17685C19007788FA /* Other Frameworks */,
 			);
@@ -84,10 +102,10 @@
 		4F302FDF17685C19007788FA /* ImageAnalogy */ = {
 			isa = PBXGroup;
 			children = (
+				4F302FFF1768CB3A007788FA /* Images */,
 				4F302FEB17685C19007788FA /* IADocument.h */,
 				4F302FEC17685C19007788FA /* IADocument.m */,
 				4F302FEE17685C19007788FA /* IADocument.xib */,
-				4F302FF117685C1A007788FA /* MainMenu.xib */,
 				4F302FE017685C19007788FA /* Supporting Files */,
 			);
 			path = ImageAnalogy;
@@ -96,6 +114,7 @@
 		4F302FE017685C19007788FA /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				4F302FF117685C1A007788FA /* MainMenu.xib */,
 				4F302FE117685C19007788FA /* ImageAnalogy-Info.plist */,
 				4F302FE217685C19007788FA /* InfoPlist.strings */,
 				4F302FE517685C19007788FA /* main.m */,
@@ -103,6 +122,15 @@
 				4F302FE817685C19007788FA /* Credits.rtf */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		4F302FFF1768CB3A007788FA /* Images */ = {
+			isa = PBXGroup;
+			children = (
+				4F3030001768CB4D007788FA /* newreflect3-src.png */,
+				4F3030011768CB4D007788FA /* newreflect3.png */,
+			);
+			name = Images;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -161,6 +189,8 @@
 				4F302FEA17685C19007788FA /* Credits.rtf in Resources */,
 				4F302FF017685C19007788FA /* IADocument.xib in Resources */,
 				4F302FF317685C1A007788FA /* MainMenu.xib in Resources */,
+				4F3030021768CB4D007788FA /* newreflect3-src.png in Resources */,
+				4F3030031768CB4D007788FA /* newreflect3.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -316,6 +346,7 @@
 				4F302FF817685C1A007788FA /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

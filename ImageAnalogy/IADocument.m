@@ -8,6 +8,13 @@
 
 #import "IADocument.h"
 
+@interface IADocument()
+
+@property (weak) IBOutlet NSImageView *imgwella;
+@property (weak) IBOutlet NSImageView *imgwella2;
+
+@end
+
 @implementation IADocument
 
 - (id)init
@@ -19,10 +26,12 @@
     return self;
 }
 
+- (void)awakeFromNib {
+
+}
+
 - (NSString *)windowNibName
 {
-    // Override returning the nib file name of the document
-    // If you need to use a subclass of NSWindowController or if your document supports multiple NSWindowControllers, you should remove this method and override -makeWindowControllers instead.
     return @"IADocument";
 }
 
@@ -55,5 +64,20 @@
     @throw exception;
     return YES;
 }
+
+- (IBAction)loadA:(id)sender {
+    NSOpenPanel *op = [NSOpenPanel openPanel];
+    [op setAllowsMultipleSelection:NO];
+    [op setAllowedFileTypes:@[@"jpg", @"png", @"bmp"]];
+    [op setCanChooseFiles:YES];
+    
+    if ([op runModal] == NSOKButton) {
+        NSArray *files = [op URLs];
+        NSImage *imga = [[NSImage alloc] initWithContentsOfURL:files[0]];
+        self.imgwella.image = imga;
+    }
+    
+}
+
 
 @end
