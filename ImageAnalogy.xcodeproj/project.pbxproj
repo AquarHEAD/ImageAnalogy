@@ -17,6 +17,8 @@
 		4F302FFA17685C2A007788FA /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4F302FF917685C2A007788FA /* OpenGL.framework */; };
 		4F303005176A01D8007788FA /* Quartz.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4F303004176A01D8007788FA /* Quartz.framework */; };
 		4F3C37501771DE66000A2691 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4F3C374F1771DE66000A2691 /* CoreGraphics.framework */; };
+		4F43CC121779D90500939D3F /* IAImageViewer.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F43CC101779D90500939D3F /* IAImageViewer.m */; };
+		4F43CC131779D90500939D3F /* IAImageViewer.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4F43CC111779D90500939D3F /* IAImageViewer.xib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -38,6 +40,9 @@
 		4F302FFB17685C37007788FA /* GLUT.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLUT.framework; path = System/Library/Frameworks/GLUT.framework; sourceTree = SDKROOT; };
 		4F303004176A01D8007788FA /* Quartz.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Quartz.framework; path = System/Library/Frameworks/Quartz.framework; sourceTree = SDKROOT; };
 		4F3C374F1771DE66000A2691 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
+		4F43CC0F1779D90500939D3F /* IAImageViewer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IAImageViewer.h; sourceTree = "<group>"; };
+		4F43CC101779D90500939D3F /* IAImageViewer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IAImageViewer.m; sourceTree = "<group>"; };
+		4F43CC111779D90500939D3F /* IAImageViewer.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = IAImageViewer.xib; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -102,6 +107,9 @@
 				4F302FEC17685C19007788FA /* IADocument.m */,
 				4F302FEE17685C19007788FA /* IADocument.xib */,
 				4F302FE017685C19007788FA /* Supporting Files */,
+				4F43CC0F1779D90500939D3F /* IAImageViewer.h */,
+				4F43CC101779D90500939D3F /* IAImageViewer.m */,
+				4F43CC111779D90500939D3F /* IAImageViewer.xib */,
 			);
 			path = ImageAnalogy;
 			sourceTree = "<group>";
@@ -175,6 +183,7 @@
 				4F302FEA17685C19007788FA /* Credits.rtf in Resources */,
 				4F302FF017685C19007788FA /* IADocument.xib in Resources */,
 				4F302FF317685C1A007788FA /* MainMenu.xib in Resources */,
+				4F43CC131779D90500939D3F /* IAImageViewer.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -187,6 +196,7 @@
 			files = (
 				4F302FE617685C19007788FA /* main.m in Sources */,
 				4F302FED17685C19007788FA /* IADocument.m in Sources */,
+				4F43CC121779D90500939D3F /* IAImageViewer.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -117,79 +117,81 @@
 }
 
 - (IBAction)doAnalogy:(id)sender {
-    size_t width  = CGImageGetWidth(self.imga);
-    size_t height = CGImageGetHeight(self.imga);
+    size_t width  = CGImageGetWidth(self.imgb);
+    size_t height = CGImageGetHeight(self.imgb);
     
-    size_t bpr = CGImageGetBytesPerRow(self.imga);
-    size_t bpp = CGImageGetBitsPerPixel(self.imga);
-    size_t bpc = CGImageGetBitsPerComponent(self.imga);
-    size_t bytes_per_pixel = bpp / bpc;
+    size_t bpr = CGImageGetBytesPerRow(self.imgb);
+    size_t bpp = CGImageGetBitsPerPixel(self.imgb);
+    size_t bpc = CGImageGetBitsPerComponent(self.imgb);
+//    size_t bytes_per_pixel = bpp / bpc;
     
-    CGBitmapInfo info = CGImageGetBitmapInfo(self.imga);
+    CGBitmapInfo info = CGImageGetBitmapInfo(self.imgb);
     
-    NSLog(
-          @"\n"
-          "===== %@ =====\n"
-          "CGImageGetHeight: %d\n"
-          "CGImageGetWidth:  %d\n"
-          "CGImageGetColorSpace: %@\n"
-          "CGImageGetBitsPerPixel:     %d\n"
-          "CGImageGetBitsPerComponent: %d\n"
-          "CGImageGetBytesPerRow:      %d\n"
-          "CGImageGetBitmapInfo: 0x%.8X\n"
-          "  kCGBitmapAlphaInfoMask     = %s\n"
-          "  kCGBitmapFloatComponents   = %s\n"
-          "  kCGBitmapByteOrderMask     = %s\n"
-          "  kCGBitmapByteOrderDefault  = %s\n"
-          "  kCGBitmapByteOrder16Little = %s\n"
-          "  kCGBitmapByteOrder32Little = %s\n"
-          "  kCGBitmapByteOrder16Big    = %s\n"
-          "  kCGBitmapByteOrder32Big    = %s\n",
-          self.imgaurl,
-          (int)width,
-          (int)height,
-          CGImageGetColorSpace(self.imga),
-          (int)bpp,
-          (int)bpc,
-          (int)bpr,
-          (unsigned)info,
-          (info & kCGBitmapAlphaInfoMask)     ? "YES" : "NO",
-          (info & kCGBitmapFloatComponents)   ? "YES" : "NO",
-          (info & kCGBitmapByteOrderMask)     ? "YES" : "NO",
-          (info & kCGBitmapByteOrderDefault)  ? "YES" : "NO",
-          (info & kCGBitmapByteOrder16Little) ? "YES" : "NO",
-          (info & kCGBitmapByteOrder32Little) ? "YES" : "NO",
-          (info & kCGBitmapByteOrder16Big)    ? "YES" : "NO",
-          (info & kCGBitmapByteOrder32Big)    ? "YES" : "NO"
-          );
+//    NSLog(
+//          @"\n"
+//          "===== %@ =====\n"
+//          "CGImageGetHeight: %d\n"
+//          "CGImageGetWidth:  %d\n"
+//          "CGImageGetColorSpace: %@\n"
+//          "CGImageGetBitsPerPixel:     %d\n"
+//          "CGImageGetBitsPerComponent: %d\n"
+//          "CGImageGetBytesPerRow:      %d\n"
+//          "CGImageGetBitmapInfo: 0x%.8X\n"
+//          "  kCGBitmapAlphaInfoMask     = %s\n"
+//          "  kCGBitmapFloatComponents   = %s\n"
+//          "  kCGBitmapByteOrderMask     = %s\n"
+//          "  kCGBitmapByteOrderDefault  = %s\n"
+//          "  kCGBitmapByteOrder16Little = %s\n"
+//          "  kCGBitmapByteOrder32Little = %s\n"
+//          "  kCGBitmapByteOrder16Big    = %s\n"
+//          "  kCGBitmapByteOrder32Big    = %s\n",
+//          self.imgaurl,
+//          (int)width,
+//          (int)height,
+//          CGImageGetColorSpace(self.imga),
+//          (int)bpp,
+//          (int)bpc,
+//          (int)bpr,
+//          (unsigned)info,
+//          (info & kCGBitmapAlphaInfoMask)     ? "YES" : "NO",
+//          (info & kCGBitmapFloatComponents)   ? "YES" : "NO",
+//          (info & kCGBitmapByteOrderMask)     ? "YES" : "NO",
+//          (info & kCGBitmapByteOrderDefault)  ? "YES" : "NO",
+//          (info & kCGBitmapByteOrder16Little) ? "YES" : "NO",
+//          (info & kCGBitmapByteOrder32Little) ? "YES" : "NO",
+//          (info & kCGBitmapByteOrder16Big)    ? "YES" : "NO",
+//          (info & kCGBitmapByteOrder32Big)    ? "YES" : "NO"
+//          );
     
-    CGDataProviderRef provider = CGImageGetDataProvider(self.imga);
-    NSData* data = (__bridge id)CGDataProviderCopyData(provider);
-    const uint8_t* bytes = [data bytes];
-    printf("Pixel Data:\n");
-    for(size_t row = 0; row < height; row++)
-    {
-        for(size_t col = 0; col < width; col++)
-        {
-            const uint8_t* pixel =
-            &bytes[row * bpr + col * bytes_per_pixel];
-            
-            printf("(");
-            for(size_t x = 0; x < bytes_per_pixel; x++)
-            {
-                printf("%.2X", pixel[x]);
-                if( x < bytes_per_pixel - 1 )
-                    printf(",");
-            }
-            
-            printf(")");
-            if( col < width - 1 )
-                printf(", ");
-        }
-        
-        printf("\n");
-    }
+    CGDataProviderRef provider = CGImageGetDataProvider(self.imgb);
+//    NSData* data = (__bridge id)CGDataProviderCopyData(provider);
+//    const uint8_t* bytes = [data bytes];
+//    printf("Pixel Data:\n");
+//    for(size_t row = 0; row < height; row++)
+//    {
+//        for(size_t col = 0; col < width; col++)
+//        {
+//            const uint8_t* pixel =
+//            &bytes[row * bpr + col * bytes_per_pixel];
+//            
+//            printf("(");
+//            for(size_t x = 0; x < bytes_per_pixel; x++)
+//            {
+//                printf("%.2X", pixel[x]);
+//                if( x < bytes_per_pixel - 1 )
+//                    printf(",");
+//            }
+//            
+//            printf(")");
+//            if( col < width - 1 )
+//                printf(", ");
+//        }
+//        
+//        printf("\n");
+//    }
+    self.imgb2 = CGImageCreate(width, height, bpc, bpp, bpr, CGImageGetColorSpace(self.imgb), info, provider, NULL, YES, kCGRenderingIntentDefault);
+    NSImage *imgb2 = [[NSImage alloc] initWithCGImage:self.imgb2 size:NSZeroSize];
+    self.imgwellb2.image = imgb2;
 }
-
 
 @end

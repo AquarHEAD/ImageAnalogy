@@ -8,11 +8,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "ImageAnalogy/IADocument.m"
-         timestampString = "393341688.342703"
+         timestampString = "393861087.367819"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "169"
-         endingLineNumber = "169"
+         startingLineNumber = "193"
+         endingLineNumber = "193"
          landmarkName = "-doAnalogy:"
          landmarkType = "5">
       </FileBreakpoint>
