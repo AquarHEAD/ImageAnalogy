@@ -7,13 +7,26 @@
          shouldBeEnabled = "No"
          ignoreCount = "0"
          continueAfterRunningActions = "No"
-         filePath = "ImageAnalogy/IADocument.m"
-         timestampString = "393861087.367819"
+         filePath = "ImageAnalogy/IAImageViewer.m"
+         timestampString = "393877282.157867"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "193"
-         endingLineNumber = "193"
-         landmarkName = "-doAnalogy:"
+         startingLineNumber = "56"
+         endingLineNumber = "56"
+         landmarkName = "-showImgAtLevel:"
+         landmarkType = "5">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "No"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         filePath = "ImageAnalogy/IADocument.m"
+         timestampString = "393878250.295989"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "195"
+         endingLineNumber = "195"
+         landmarkName = "+gaussianPyramid:level:"
          landmarkType = "5">
       </FileBreakpoint>
    </FileBreakpoints>

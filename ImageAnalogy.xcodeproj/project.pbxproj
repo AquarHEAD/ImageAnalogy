@@ -103,13 +103,9 @@
 		4F302FDF17685C19007788FA /* ImageAnalogy */ = {
 			isa = PBXGroup;
 			children = (
-				4F302FEB17685C19007788FA /* IADocument.h */,
-				4F302FEC17685C19007788FA /* IADocument.m */,
-				4F302FEE17685C19007788FA /* IADocument.xib */,
+				4F6EBC0B1779F93100E51C3F /* Image Viewer */,
+				4F6EBC0A1779F92800E51C3F /* Main */,
 				4F302FE017685C19007788FA /* Supporting Files */,
-				4F43CC0F1779D90500939D3F /* IAImageViewer.h */,
-				4F43CC101779D90500939D3F /* IAImageViewer.m */,
-				4F43CC111779D90500939D3F /* IAImageViewer.xib */,
 			);
 			path = ImageAnalogy;
 			sourceTree = "<group>";
@@ -125,6 +121,26 @@
 				4F302FE817685C19007788FA /* Credits.rtf */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		4F6EBC0A1779F92800E51C3F /* Main */ = {
+			isa = PBXGroup;
+			children = (
+				4F302FEB17685C19007788FA /* IADocument.h */,
+				4F302FEC17685C19007788FA /* IADocument.m */,
+				4F302FEE17685C19007788FA /* IADocument.xib */,
+			);
+			name = Main;
+			sourceTree = "<group>";
+		};
+		4F6EBC0B1779F93100E51C3F /* Image Viewer */ = {
+			isa = PBXGroup;
+			children = (
+				4F43CC0F1779D90500939D3F /* IAImageViewer.h */,
+				4F43CC101779D90500939D3F /* IAImageViewer.m */,
+				4F43CC111779D90500939D3F /* IAImageViewer.xib */,
+			);
+			name = "Image Viewer";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
