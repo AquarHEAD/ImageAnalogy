@@ -13,24 +13,20 @@
 
 @property (weak) IBOutlet NSTextField *levelInput;
 
-@property (weak) IBOutlet NSImageView *imgwella;
-@property (weak) IBOutlet NSImageView *imgwella2;
-
-@property (weak) IBOutlet NSImageView *imgwellb;
-@property (weak) IBOutlet NSImageView *imgwellb2;
-
 @property CGImageRef imga;
 @property (strong, nonatomic) NSURL *imgaurl;
 @property (strong, nonatomic) IAImageViewer *viewerA;
 
 @property CGImageRef imga2;
 @property (strong, nonatomic) NSURL *imga2url;
+@property (strong, nonatomic) IAImageViewer *viewerA2;
 
 @property CGImageRef imgb;
 @property (strong, nonatomic) NSURL *imgburl;
+@property (strong, nonatomic) IAImageViewer *viewerB;
 
 @property CGImageRef imgb2;
-@property (strong, nonatomic) NSURL *imgb2url;
+@property (strong, nonatomic) IAImageViewer *viewerB2;
 
 @end
 
@@ -86,12 +82,8 @@
         NSArray *files = [op URLs];
         self.imgaurl = files[0];
         NSImage *img = [[NSImage alloc] initWithContentsOfURL:self.imgaurl];
-        self.imgwella.image = img;
         self.imga = [img CGImageForProposedRect:nil context:[NSGraphicsContext graphicsContextWithAttributes:nil] hints:nil];
     }
-}
-
-- (IBAction)viewA:(id)sender {
     self.viewerA = [IAImageViewer new];
     self.viewerA.pyramids = [[self class] gaussianPyramid:self.imga level:[[self.levelInput stringValue] intValue]];
     self.viewerA.image_tag = @"A";
@@ -108,9 +100,13 @@
         NSArray *files = [op URLs];
         self.imga2url = files[0];
         NSImage *img = [[NSImage alloc] initWithContentsOfURL:self.imga2url];
-        self.imgwella2.image = img;
         self.imga2 = [img CGImageForProposedRect:nil context:[NSGraphicsContext graphicsContextWithAttributes:nil] hints:nil];
     }
+    self.viewerA = [IAImageViewer new];
+    self.viewerA.pyramids = [[self class] gaussianPyramid:self.imga level:[[self.levelInput stringValue] intValue]];
+    self.viewerA.image_tag = @"A";
+    self.viewerA.img = self.imga;
+    [self.viewerA showWindow:nil];
 }
 
 - (IBAction)loadB:(id)sender {
@@ -122,26 +118,16 @@
         NSArray *files = [op URLs];
         self.imgburl = files[0];
         NSImage *img = [[NSImage alloc] initWithContentsOfURL:self.imgburl];
-        self.imgwellb.image = img;
         self.imgb = [img CGImageForProposedRect:nil context:[NSGraphicsContext graphicsContextWithAttributes:nil] hints:nil];
     }
+    self.viewerA = [IAImageViewer new];
+    self.viewerA.pyramids = [[self class] gaussianPyramid:self.imga level:[[self.levelInput stringValue] intValue]];
+    self.viewerA.image_tag = @"A";
+    self.viewerA.img = self.imga;
+    [self.viewerA showWindow:nil];
 }
 
 - (IBAction)doAnalogy:(id)sender {
-    size_t width  = CGImageGetWidth(self.imgb);
-    size_t height = CGImageGetHeight(self.imgb);
-    
-    size_t bpr = CGImageGetBytesPerRow(self.imgb);
-    size_t bpp = CGImageGetBitsPerPixel(self.imgb);
-    size_t bpc = CGImageGetBitsPerComponent(self.imgb);
-//    size_t bytes_per_pixel = bpp / bpc;
-    
-    CGBitmapInfo info = CGImageGetBitmapInfo(self.imgb);
-    CGDataProviderRef provider = CGImageGetDataProvider(self.imgb);
-
-    self.imgb2 = CGImageCreate(width, height, bpc, bpp, bpr, CGImageGetColorSpace(self.imgb), info, provider, NULL, YES, kCGRenderingIntentDefault);
-    NSImage *imgb2 = [[NSImage alloc] initWithCGImage:self.imgb2 size:NSZeroSize];
-    self.imgwellb2.image = imgb2;
 }
 
 + (NSArray *)gaussianPyramid:(CGImageRef)img level:(int)levels {
@@ -158,7 +144,6 @@
     size_t bpp = CGImageGetBitsPerPixel(img);
     size_t bpc = CGImageGetBitsPerComponent(img);
     size_t bytes_per_pixel = bpp / bpc;
-//    CGBitmapInfo info = CGImageGetBitmapInfo(img);
     CGDataProviderRef provider = CGImageGetDataProvider(img);
     
     NSData* origin_data = (__bridge id)CGDataProviderCopyData(provider);
