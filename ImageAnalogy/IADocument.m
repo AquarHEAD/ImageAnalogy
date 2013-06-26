@@ -22,6 +22,7 @@
 @property (weak) IBOutlet NSTextField *levelInput;
 
 @property (weak) IBOutlet NSButton *analogyButton;
+@property (weak) IBOutlet NSProgressIndicator *progressBar;
 
 @property (strong, nonatomic) NSURL *imgaurl;
 @property (strong, nonatomic) IAImageViewer *viewerA;
@@ -106,6 +107,7 @@
         [self.viewerA showWindow:nil];
         self.a_loaded = YES;
     }
+    [self enableAnalogy];
 }
 
 - (IBAction)loadA2:(id)sender {
@@ -125,6 +127,7 @@
         [self.viewerA2 showWindow:nil];
         self.a2_loaded = YES;
     }
+    [self enableAnalogy];
 }
 
 - (IBAction)loadB:(id)sender {
@@ -144,15 +147,83 @@
         [self.viewerB showWindow:nil];
         self.b_loaded = YES;
     }
-    [self checkAnalogy];
+    [self enableAnalogy];
 }
 
 # pragma mark - Analogy action
 
 - (IBAction)doAnalogy:(id)sender {
+    NSMutableArray *b2pym = [NSMutableArray new];
+    if (self.typeChooser.indexOfSelectedItem == AlgoBruteForce) {
+        // start iter level
+        double lw = [[self.levelWeightInput stringValue] doubleValue];
+        for (int l=[[self.levelInput stringValue] intValue]-1; l>=0; l--) {
+            
+            IAGausPymLevel *thisLevelB = [self.pymB objectAtIndex:l];
+            IAGausPymLevel *thisLevelA = [self.pymA objectAtIndex:l];
+            
+            IAGausPymLevel *thisLevelA2 = [self.pymA2 objectAtIndex:l];
+            const uint8_t* a2_bytes = [thisLevelA2.levelData bytes];
+            uint8_t* b2_bytes = malloc(thisLevelB.height*thisLevelB.width*thisLevelB.bpx);
+            
+            // start iter each pixel in B
+            for (long colb=0; colb < thisLevelB.width; colb++) {
+                for (long rowb=0; rowb < thisLevelB.height; rowb++) {
+                    
+                    double bestdist = 0;
+                    long bestcol;
+                    long bestrow;
+                    
+                    for (long cola=0; cola < thisLevelA.width; cola++) {
+                        for (long rowa=0; rowa < thisLevelA.height; rowa++) {
+                            // calc each pixel in A, the dist to the pixel in B
+                            double dist = 0;
+                            if (l < [[self.levelInput stringValue] intValue]-1) {
+                                double dist1 = [BestLocBruteForce neighbourDist5ForB:thisLevelB BCol:colb BRow:rowb Bbpr:thisLevelB.bpr Bbpx:thisLevelB.bpx AndA:thisLevelA ACol:cola ARow:rowa Abpr:thisLevelA.bpr Abpx:thisLevelA.bpx inColorSpace:(cs_t)self.colorSpaceChooser.indexOfSelectedItem];
+                                IAGausPymLevel *nextLevelB = [self.pymB objectAtIndex:l+1];
+                                IAGausPymLevel *nextLevelA = [self.pymA objectAtIndex:l+1];
+                                double dist2 = [BestLocBruteForce neighbourDist3ForB:nextLevelB BCol:colb/2 BRow:rowb/2 Bbpr:nextLevelB.bpr Bbpx:nextLevelB.bpx AndA:nextLevelA ACol:cola/2 ARow:rowa/2 Abpr:nextLevelA.bpr Abpx:nextLevelA.bpx inColorSpace:(cs_t)self.colorSpaceChooser.indexOfSelectedItem];
+                                dist = dist1 + lw*lw*dist2;
+                            }
+                            else {
+                                dist = [BestLocBruteForce neighbourDist5ForB:thisLevelB BCol:colb BRow:rowb Bbpr:thisLevelB.bpr Bbpx:thisLevelB.bpx AndA:thisLevelA ACol:cola ARow:rowa Abpr:thisLevelA.bpr Abpx:thisLevelA.bpx inColorSpace:(cs_t)self.colorSpaceChooser.indexOfSelectedItem];
+                            }
+                            if ((dist < bestdist) || ((cola==0) && (rowa==0))) {
+                                bestdist = dist;
+                                bestcol = cola;
+                                bestrow = rowa;
+                            }
+                        }
+                    } // end calc bestdist
+                    
+                    // copy from A' to B'
+                    const uint8_t* a2_pixel = &a2_bytes[bestrow*thisLevelB.bpr+bestcol*thisLevelB.bpx];
+                    uint8_t* b2_pixel = &b2_bytes[rowb*thisLevelB.bpr+colb*thisLevelB.bpx];
+                    for (int pp=0; pp<thisLevelB.bpx; pp++) {
+                        b2_pixel[pp] = a2_pixel[pp];
+                    }
+                }
+            } // end iter each B pixel
+            
+            NSData *b2data = [NSData dataWithBytes:b2_bytes length:thisLevelB.height*thisLevelB.width*thisLevelB.bpx];
+            IAGausPymLevel *thisLevelB2 = [IAGausPymLevel new];
+            thisLevelB2.levelData = b2data;
+            thisLevelB2.width = thisLevelB.width;
+            thisLevelB2.height = thisLevelB.height;
+            thisLevelB2.bpr = thisLevelB.bpr;
+            thisLevelB2.bpx = thisLevelB.bpx;
+            [b2pym insertObject:thisLevelB2 atIndex:0];
+            [self.progressBar incrementBy:25.0];
+        } // end iter level
+    }
+    self.viewerB2 = [IAImageViewer new];
+    self.viewerB2.pyramid = [b2pym copy];
+    self.viewerB2.image_tag = @"B'";
+    self.viewerB2.img = [[NSImage alloc] initWithContentsOfURL:self.imgburl];
+    [self.viewerB2 showWindow:nil];
 }
 
-- (void)checkAnalogy {
+- (void)enableAnalogy {
     if (self.a_loaded && self.a2_loaded && self.b_loaded) {
         [self.analogyButton setEnabled:YES];
     }

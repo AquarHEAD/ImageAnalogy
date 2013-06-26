@@ -15,6 +15,6 @@ typedef enum {
 
 @interface IAColorSpace : NSObject
 
-+ (double)pixelDistOfB:(const uint8_t *)pixelb AndA:(const uint8_t *)pixelb InColorSpace:(cs_t)cs;
++ (double)pixelDistOfB:(const uint8_t *)pixelb AndA:(const uint8_t *)pixela InColorSpace:(cs_t)cs;
 
 @end
