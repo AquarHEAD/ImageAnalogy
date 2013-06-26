@@ -8,25 +8,38 @@
 
 #import "IADocument.h"
 #import "IAImageViewer.h"
+#import "IAGausPymLevel.h"
+#import "IAAlgorithms.h"
 
 @interface IADocument()
 
+@property (weak) IBOutlet NSPopUpButton *typeChooser;
+@property (weak) IBOutlet NSTextField *levelWeightInput;
+@property (weak) IBOutlet NSButton *use2LevelButton;
+@property (weak) IBOutlet NSTextField *annEpsInput;
+@property (weak) IBOutlet NSTextField *cohenEpsInput;
+@property (weak) IBOutlet NSPopUpButton *colorSpaceChooser;
 @property (weak) IBOutlet NSTextField *levelInput;
 
-@property CGImageRef imga;
+@property (weak) IBOutlet NSButton *analogyButton;
+
 @property (strong, nonatomic) NSURL *imgaurl;
 @property (strong, nonatomic) IAImageViewer *viewerA;
+@property (strong, nonatomic) NSArray *pymA;
+@property BOOL a_loaded;
 
-@property CGImageRef imga2;
 @property (strong, nonatomic) NSURL *imga2url;
 @property (strong, nonatomic) IAImageViewer *viewerA2;
+@property (strong, nonatomic) NSArray *pymA2;
+@property BOOL a2_loaded;
 
-@property CGImageRef imgb;
 @property (strong, nonatomic) NSURL *imgburl;
 @property (strong, nonatomic) IAImageViewer *viewerB;
+@property (strong, nonatomic) NSArray *pymB;
+@property BOOL b_loaded;
 
-@property CGImageRef imgb2;
 @property (strong, nonatomic) IAImageViewer *viewerB2;
+@property (strong, nonatomic) NSArray *pymB2;
 
 @end
 
@@ -41,7 +54,8 @@
 }
 
 - (void)awakeFromNib {
-
+    [self.typeChooser addItemsWithTitles:@[@"Brute Force", @"Ashikhmin", @"ANN", @"Ash + ANN"]];
+    [self.colorSpaceChooser addItemsWithTitles:@[@"RGB", @"YIQ"]];
 }
 
 - (NSString *)windowNibName
@@ -73,6 +87,8 @@
     return YES;
 }
 
+# pragma mark - Load Pictures
+
 - (IBAction)loadA:(id)sender {
     NSOpenPanel *op = [NSOpenPanel openPanel];
     [op setAllowsMultipleSelection:NO];
@@ -82,13 +98,14 @@
         NSArray *files = [op URLs];
         self.imgaurl = files[0];
         NSImage *img = [[NSImage alloc] initWithContentsOfURL:self.imgaurl];
-        self.imga = [img CGImageForProposedRect:nil context:[NSGraphicsContext graphicsContextWithAttributes:nil] hints:nil];
+        self.viewerA = [IAImageViewer new];
+        self.pymA = [[self class] gaussianPyramid:[img CGImageForProposedRect:nil context:[NSGraphicsContext graphicsContextWithAttributes:nil] hints:nil] level:[[self.levelInput stringValue] intValue]];
+        self.viewerA.pyramid = self.pymA;
+        self.viewerA.image_tag = @"A";
+        self.viewerA.img = img;
+        [self.viewerA showWindow:nil];
+        self.a_loaded = YES;
     }
-    self.viewerA = [IAImageViewer new];
-    self.viewerA.pyramids = [[self class] gaussianPyramid:self.imga level:[[self.levelInput stringValue] intValue]];
-    self.viewerA.image_tag = @"A";
-    self.viewerA.img = self.imga;
-    [self.viewerA showWindow:nil];
 }
 
 - (IBAction)loadA2:(id)sender {
@@ -100,13 +117,14 @@
         NSArray *files = [op URLs];
         self.imga2url = files[0];
         NSImage *img = [[NSImage alloc] initWithContentsOfURL:self.imga2url];
-        self.imga2 = [img CGImageForProposedRect:nil context:[NSGraphicsContext graphicsContextWithAttributes:nil] hints:nil];
+        self.viewerA2 = [IAImageViewer new];
+        self.pymA2 = [[self class] gaussianPyramid:[img CGImageForProposedRect:nil context:[NSGraphicsContext graphicsContextWithAttributes:nil] hints:nil] level:[[self.levelInput stringValue] intValue]];
+        self.viewerA2.pyramid = self.pymA2;
+        self.viewerA2.image_tag = @"A'";
+        self.viewerA2.img = img;
+        [self.viewerA2 showWindow:nil];
+        self.a2_loaded = YES;
     }
-    self.viewerA = [IAImageViewer new];
-    self.viewerA.pyramids = [[self class] gaussianPyramid:self.imga level:[[self.levelInput stringValue] intValue]];
-    self.viewerA.image_tag = @"A";
-    self.viewerA.img = self.imga;
-    [self.viewerA showWindow:nil];
 }
 
 - (IBAction)loadB:(id)sender {
@@ -118,20 +136,32 @@
         NSArray *files = [op URLs];
         self.imgburl = files[0];
         NSImage *img = [[NSImage alloc] initWithContentsOfURL:self.imgburl];
-        self.imgb = [img CGImageForProposedRect:nil context:[NSGraphicsContext graphicsContextWithAttributes:nil] hints:nil];
+        self.viewerB = [IAImageViewer new];
+        self.pymB = [[self class] gaussianPyramid:[img CGImageForProposedRect:nil context:[NSGraphicsContext graphicsContextWithAttributes:nil] hints:nil] level:[[self.levelInput stringValue] intValue]];
+        self.viewerB.pyramid = self.pymB;
+        self.viewerB.image_tag = @"B";
+        self.viewerB.img = img;
+        [self.viewerB showWindow:nil];
+        self.b_loaded = YES;
     }
-    self.viewerA = [IAImageViewer new];
-    self.viewerA.pyramids = [[self class] gaussianPyramid:self.imga level:[[self.levelInput stringValue] intValue]];
-    self.viewerA.image_tag = @"A";
-    self.viewerA.img = self.imga;
-    [self.viewerA showWindow:nil];
+    [self checkAnalogy];
 }
+
+# pragma mark - Analogy action
 
 - (IBAction)doAnalogy:(id)sender {
 }
 
+- (void)checkAnalogy {
+    if (self.a_loaded && self.a2_loaded && self.b_loaded) {
+        [self.analogyButton setEnabled:YES];
+    }
+}
+
+# pragma mark - Create Gaussian Pyramids
+
 + (NSArray *)gaussianPyramid:(CGImageRef)img level:(int)levels {
-    NSMutableArray *pyms = [NSMutableArray new];
+    NSMutableArray *pym = [NSMutableArray new];
     
     const int change_row[] = { -1, -1, -1, 0, 0, 0, 1, 1, 1};
     const int change_col[] = { -1, 0, 1, -1, 0, 1, -1, 0, 1};
@@ -146,8 +176,15 @@
     size_t bytes_per_pixel = bpp / bpc;
     CGDataProviderRef provider = CGImageGetDataProvider(img);
     
+    // save level 1
     NSData* origin_data = (__bridge id)CGDataProviderCopyData(provider);
-    [pyms addObject:origin_data];
+    IAGausPymLevel *origin_level = [IAGausPymLevel new];
+    origin_level.levelData = origin_data;
+    origin_level.width = width;
+    origin_level.height = height;
+    origin_level.bpr = bpr;
+    origin_level.bpx = bytes_per_pixel;
+    [pym addObject:origin_level];
     
     const uint8_t* old_bytes = [origin_data bytes];
     size_t old_width = width;
@@ -184,8 +221,14 @@
         }
         
         // save bytes to NSData
-        NSData *newLevel = [NSData dataWithBytes:new_bytes length:new_width*new_height*bytes_per_pixel];
-        [pyms addObject:newLevel];
+        NSData *newLevelData = [NSData dataWithBytes:new_bytes length:new_width*new_height*bytes_per_pixel];
+        IAGausPymLevel *newLevel = [IAGausPymLevel new];
+        newLevel.levelData = newLevelData;
+        newLevel.width = new_width;
+        newLevel.height = new_height;
+        newLevel.bpr = new_bpr;
+        newLevel.bpx = bytes_per_pixel;
+        [pym addObject:newLevel];
         
         // exchange old <-> new
         old_bytes = new_bytes;
@@ -194,7 +237,7 @@
         old_bpr = new_bpr;
     }
     
-    return [pyms copy];
+    return [pym copy];
 }
 
 @end

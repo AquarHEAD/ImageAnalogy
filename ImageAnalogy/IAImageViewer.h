@@ -11,7 +11,7 @@
 @interface IAImageViewer : NSWindowController
 
 @property (strong, nonatomic) NSString *image_tag;
-@property CGImageRef img;
-@property (strong, nonatomic) NSArray *pyramids;
+@property (strong, nonatomic) NSImage *img;
+@property (strong, nonatomic) NSArray *pyramid;
 
 @end

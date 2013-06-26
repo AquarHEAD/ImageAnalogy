@@ -14,11 +14,16 @@
 		4F302FED17685C19007788FA /* IADocument.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F302FEC17685C19007788FA /* IADocument.m */; };
 		4F302FF017685C19007788FA /* IADocument.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4F302FEE17685C19007788FA /* IADocument.xib */; };
 		4F302FF317685C1A007788FA /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4F302FF117685C1A007788FA /* MainMenu.xib */; };
-		4F302FFA17685C2A007788FA /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4F302FF917685C2A007788FA /* OpenGL.framework */; };
 		4F303005176A01D8007788FA /* Quartz.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4F303004176A01D8007788FA /* Quartz.framework */; };
 		4F3C37501771DE66000A2691 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4F3C374F1771DE66000A2691 /* CoreGraphics.framework */; };
 		4F43CC121779D90500939D3F /* IAImageViewer.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F43CC101779D90500939D3F /* IAImageViewer.m */; };
 		4F43CC131779D90500939D3F /* IAImageViewer.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4F43CC111779D90500939D3F /* IAImageViewer.xib */; };
+		4F6EBC12177AD59700E51C3F /* BestLocBruteForce.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F6EBC11177AD59700E51C3F /* BestLocBruteForce.m */; };
+		4F6EBC18177AD5C700E51C3F /* BestLocAshikhmin.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F6EBC17177AD5C700E51C3F /* BestLocAshikhmin.m */; };
+		4F6EBC1A177AD60500E51C3F /* Sublime Text.icns in Resources */ = {isa = PBXBuildFile; fileRef = 4F6EBC19177AD60500E51C3F /* Sublime Text.icns */; };
+		4F6EBC1E177AE81C00E51C3F /* IAColorSpace.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F6EBC1D177AE81C00E51C3F /* IAColorSpace.m */; };
+		4F6EBC23177AE9B800E51C3F /* IAGausPymLevel.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F6EBC22177AE9B800E51C3F /* IAGausPymLevel.m */; };
+		4F6EBC26177AEE5400E51C3F /* IAAlgorithms.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F6EBC25177AEE5400E51C3F /* IAAlgorithms.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -43,6 +48,17 @@
 		4F43CC0F1779D90500939D3F /* IAImageViewer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IAImageViewer.h; sourceTree = "<group>"; };
 		4F43CC101779D90500939D3F /* IAImageViewer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IAImageViewer.m; sourceTree = "<group>"; };
 		4F43CC111779D90500939D3F /* IAImageViewer.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = IAImageViewer.xib; sourceTree = "<group>"; };
+		4F6EBC10177AD59700E51C3F /* BestLocBruteForce.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BestLocBruteForce.h; path = Algorithms/BestLocBruteForce.h; sourceTree = "<group>"; };
+		4F6EBC11177AD59700E51C3F /* BestLocBruteForce.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = BestLocBruteForce.m; path = Algorithms/BestLocBruteForce.m; sourceTree = "<group>"; };
+		4F6EBC16177AD5C700E51C3F /* BestLocAshikhmin.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BestLocAshikhmin.h; path = Algorithms/BestLocAshikhmin.h; sourceTree = "<group>"; };
+		4F6EBC17177AD5C700E51C3F /* BestLocAshikhmin.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = BestLocAshikhmin.m; path = Algorithms/BestLocAshikhmin.m; sourceTree = "<group>"; };
+		4F6EBC19177AD60500E51C3F /* Sublime Text.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; name = "Sublime Text.icns"; path = "../Sublime Text.icns"; sourceTree = "<group>"; };
+		4F6EBC1C177AE81C00E51C3F /* IAColorSpace.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IAColorSpace.h; sourceTree = "<group>"; };
+		4F6EBC1D177AE81C00E51C3F /* IAColorSpace.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IAColorSpace.m; sourceTree = "<group>"; };
+		4F6EBC21177AE9B800E51C3F /* IAGausPymLevel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IAGausPymLevel.h; sourceTree = "<group>"; };
+		4F6EBC22177AE9B800E51C3F /* IAGausPymLevel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IAGausPymLevel.m; sourceTree = "<group>"; };
+		4F6EBC24177AEE5400E51C3F /* IAAlgorithms.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = IAAlgorithms.h; path = Algorithms/IAAlgorithms.h; sourceTree = "<group>"; };
+		4F6EBC25177AEE5400E51C3F /* IAAlgorithms.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = IAAlgorithms.m; path = Algorithms/IAAlgorithms.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -52,7 +68,6 @@
 			files = (
 				4F3C37501771DE66000A2691 /* CoreGraphics.framework in Frameworks */,
 				4F303005176A01D8007788FA /* Quartz.framework in Frameworks */,
-				4F302FFA17685C2A007788FA /* OpenGL.framework in Frameworks */,
 				4F302FDA17685C19007788FA /* Cocoa.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -103,6 +118,9 @@
 		4F302FDF17685C19007788FA /* ImageAnalogy */ = {
 			isa = PBXGroup;
 			children = (
+				4F6EBC20177AE99D00E51C3F /* Features */,
+				4F6EBC1B177AE7F400E51C3F /* Color Space */,
+				4F6EBC0C177A201300E51C3F /* Algorithms */,
 				4F6EBC0B1779F93100E51C3F /* Image Viewer */,
 				4F6EBC0A1779F92800E51C3F /* Main */,
 				4F302FE017685C19007788FA /* Supporting Files */,
@@ -113,6 +131,7 @@
 		4F302FE017685C19007788FA /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				4F6EBC19177AD60500E51C3F /* Sublime Text.icns */,
 				4F302FF117685C1A007788FA /* MainMenu.xib */,
 				4F302FE117685C19007788FA /* ImageAnalogy-Info.plist */,
 				4F302FE217685C19007788FA /* InfoPlist.strings */,
@@ -141,6 +160,37 @@
 				4F43CC111779D90500939D3F /* IAImageViewer.xib */,
 			);
 			name = "Image Viewer";
+			sourceTree = "<group>";
+		};
+		4F6EBC0C177A201300E51C3F /* Algorithms */ = {
+			isa = PBXGroup;
+			children = (
+				4F6EBC24177AEE5400E51C3F /* IAAlgorithms.h */,
+				4F6EBC25177AEE5400E51C3F /* IAAlgorithms.m */,
+				4F6EBC10177AD59700E51C3F /* BestLocBruteForce.h */,
+				4F6EBC11177AD59700E51C3F /* BestLocBruteForce.m */,
+				4F6EBC16177AD5C700E51C3F /* BestLocAshikhmin.h */,
+				4F6EBC17177AD5C700E51C3F /* BestLocAshikhmin.m */,
+			);
+			name = Algorithms;
+			sourceTree = "<group>";
+		};
+		4F6EBC1B177AE7F400E51C3F /* Color Space */ = {
+			isa = PBXGroup;
+			children = (
+				4F6EBC1C177AE81C00E51C3F /* IAColorSpace.h */,
+				4F6EBC1D177AE81C00E51C3F /* IAColorSpace.m */,
+			);
+			name = "Color Space";
+			sourceTree = "<group>";
+		};
+		4F6EBC20177AE99D00E51C3F /* Features */ = {
+			isa = PBXGroup;
+			children = (
+				4F6EBC21177AE9B800E51C3F /* IAGausPymLevel.h */,
+				4F6EBC22177AE9B800E51C3F /* IAGausPymLevel.m */,
+			);
+			name = Features;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -200,6 +250,7 @@
 				4F302FF017685C19007788FA /* IADocument.xib in Resources */,
 				4F302FF317685C1A007788FA /* MainMenu.xib in Resources */,
 				4F43CC131779D90500939D3F /* IAImageViewer.xib in Resources */,
+				4F6EBC1A177AD60500E51C3F /* Sublime Text.icns in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -213,6 +264,11 @@
 				4F302FE617685C19007788FA /* main.m in Sources */,
 				4F302FED17685C19007788FA /* IADocument.m in Sources */,
 				4F43CC121779D90500939D3F /* IAImageViewer.m in Sources */,
+				4F6EBC12177AD59700E51C3F /* BestLocBruteForce.m in Sources */,
+				4F6EBC18177AD5C700E51C3F /* BestLocAshikhmin.m in Sources */,
+				4F6EBC1E177AE81C00E51C3F /* IAColorSpace.m in Sources */,
+				4F6EBC23177AE9B800E51C3F /* IAGausPymLevel.m in Sources */,
+				4F6EBC26177AEE5400E51C3F /* IAAlgorithms.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

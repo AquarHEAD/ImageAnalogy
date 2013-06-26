@@ -7,6 +7,7 @@
 //
 
 #import "IAImageViewer.h"
+#import "IAGausPymLevel.h"
 
 @interface IAImageViewer ()
 
@@ -25,7 +26,7 @@
 
 - (void)awakeFromNib {
     self.window.title = self.image_tag;
-    for (int i=0; i<[self.pyramids count]; i++) {
+    for (int i=0; i<[self.pyramid count]; i++) {
         [self.level addItemWithTitle:[NSString stringWithFormat:@"%d", i+1]];
     }
     [self showImgAtLevel:0];
@@ -36,24 +37,15 @@
 }
 
 - (void)showImgAtLevel:(NSInteger)index {
-    NSData *imgdata = [self.pyramids objectAtIndex:index];
+    IAGausPymLevel *level = [self.pyramid objectAtIndex:index];
+    NSData *imgdata = level.levelData;
     
-    size_t width  = CGImageGetWidth(self.img);
-    size_t height = CGImageGetHeight(self.img);
-    
-    size_t bpr = CGImageGetBytesPerRow(self.img);
-    for (int i = 0; i<index; i++) {
-        bpr /= 2;
-        width /= 2;
-        height /= 2;
-    }
-    size_t bpp = CGImageGetBitsPerPixel(self.img);
-    size_t bpc = CGImageGetBitsPerComponent(self.img);
-    
-    CGBitmapInfo info = CGImageGetBitmapInfo(self.img);
+    CGImageRef imgr = [self.img CGImageForProposedRect:nil context:[NSGraphicsContext graphicsContextWithAttributes:nil] hints:nil];
+    size_t bpp = CGImageGetBitsPerPixel(imgr);
+    size_t bpc = CGImageGetBitsPerComponent(imgr);
+    CGBitmapInfo info = CGImageGetBitmapInfo(imgr);
     CGDataProviderRef provider = CGDataProviderCreateWithCFData((__bridge CFDataRef)imgdata);
-    
-    CGImageRef imgl = CGImageCreate(width, height, bpc, bpp, bpr, CGImageGetColorSpace(self.img), info, provider, NULL, YES, kCGRenderingIntentDefault);
+    CGImageRef imgl = CGImageCreate(level.width, level.height, bpc, bpp, level.bpr, CGImageGetColorSpace(imgr), info, provider, NULL, YES, kCGRenderingIntentDefault);
     NSImage *nsimg = [[NSImage alloc] initWithCGImage:imgl size:NSZeroSize];
     self.imgWell.image = nsimg;
 }
