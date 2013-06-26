@@ -19,6 +19,7 @@
 @property (weak) IBOutlet NSTextField *annEpsInput;
 @property (weak) IBOutlet NSTextField *cohenEpsInput;
 @property (weak) IBOutlet NSPopUpButton *colorSpaceChooser;
+@property (weak) IBOutlet NSButton *useLuminRemap;
 @property (weak) IBOutlet NSTextField *levelInput;
 
 @property (weak) IBOutlet NSButton *analogyButton;
@@ -40,7 +41,6 @@
 @property BOOL b_loaded;
 
 @property (strong, nonatomic) IAImageViewer *viewerB2;
-@property (strong, nonatomic) NSArray *pymB2;
 
 @end
 
@@ -155,10 +155,10 @@
 - (IBAction)doAnalogy:(id)sender {
     NSMutableArray *b2pym = [NSMutableArray new];
     if (self.typeChooser.indexOfSelectedItem == AlgoBruteForce) {
-        // start iter level
         double lw = [[self.levelWeightInput stringValue] doubleValue];
+        
         for (int l=[[self.levelInput stringValue] intValue]-1; l>=0; l--) {
-            
+            // start iter level
             IAGausPymLevel *thisLevelB = [self.pymB objectAtIndex:l];
             IAGausPymLevel *thisLevelA = [self.pymA objectAtIndex:l];
             
@@ -193,8 +193,9 @@
                                 bestcol = cola;
                                 bestrow = rowa;
                             }
+                        // end calc bestdist
                         }
-                    } // end calc bestdist
+                    }
                     
                     // copy from A' to B'
                     const uint8_t* a2_pixel = &a2_bytes[bestrow*thisLevelB.bpr+bestcol*thisLevelB.bpx];
@@ -203,7 +204,8 @@
                         b2_pixel[pp] = a2_pixel[pp];
                     }
                 }
-            } // end iter each B pixel
+            // end iter each B pixel
+            }
             
             NSData *b2data = [NSData dataWithBytes:b2_bytes length:thisLevelB.height*thisLevelB.width*thisLevelB.bpx];
             IAGausPymLevel *thisLevelB2 = [IAGausPymLevel new];
@@ -215,6 +217,9 @@
             [b2pym insertObject:thisLevelB2 atIndex:0];
             [self.progressBar incrementBy:25.0];
         } // end iter level
+    }
+    else if (self.typeChooser.indexOfSelectedItem == AlgoAshikhmin) {
+        
     }
     self.viewerB2 = [IAImageViewer new];
     self.viewerB2.pyramid = [b2pym copy];
