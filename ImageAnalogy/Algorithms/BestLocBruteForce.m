@@ -10,6 +10,34 @@
 
 @implementation BestLocBruteForce
 
++ (result_bf *)findBestLocationThisLevelB:(IAGausPymLevel *)thisLevelB thisLevelA:(IAGausPymLevel *)thisLevelA nextLevelB:(IAGausPymLevel *)nextLevelB nextLevelA:(IAGausPymLevel *)nextLevelA colb:(long)colb rowb:(long)rowb isLastLevel:(BOOL)lastLevel withLevelWeight:(double)lw inColorSpace:(cs_t)cs {
+    result_bf *r = malloc(sizeof(result_bf));
+    r->bestdist = 0;
+    
+    for (long cola=0; cola < thisLevelA.width; cola++) {
+        for (long rowa=0; rowa < thisLevelA.height; rowa++) {
+            // calc each pixel in A, the dist to the pixel in B
+            double dist = 0;
+            if (lastLevel) {
+                double dist1 = [BestLocBruteForce neighbourDist5ForB:thisLevelB BCol:colb BRow:rowb Bbpr:thisLevelB.bpr Bbpx:thisLevelB.bpx AndA:thisLevelA ACol:cola ARow:rowa Abpr:thisLevelA.bpr Abpx:thisLevelA.bpx inColorSpace:cs];
+                double dist2 = [BestLocBruteForce neighbourDist3ForB:nextLevelB BCol:colb/2 BRow:rowb/2 Bbpr:nextLevelB.bpr Bbpx:nextLevelB.bpx AndA:nextLevelA ACol:cola/2 ARow:rowa/2 Abpr:nextLevelA.bpr Abpx:nextLevelA.bpx inColorSpace:cs];
+                dist = dist1 + lw*lw*dist2;
+            }
+            else {
+                dist = [BestLocBruteForce neighbourDist5ForB:thisLevelB BCol:colb BRow:rowb Bbpr:thisLevelB.bpr Bbpx:thisLevelB.bpx AndA:thisLevelA ACol:cola ARow:rowa Abpr:thisLevelA.bpr Abpx:thisLevelA.bpx inColorSpace:cs];
+            }
+            if ((dist < r->bestdist) || ((cola==0) && (rowa==0))) {
+                r->bestdist = dist;
+                r->bestcol = cola;
+                r->bestrow = rowa;
+            }
+            // end calc bestdist
+        }
+    }
+    
+    return r;
+}
+
 + (double)neighbourDist5ForB:(IAGausPymLevel *)level_b BCol:(long)cb BRow:(long)rb Bbpr:(size_t)bprb Bbpx:(size_t)bpxb
                         AndA:(IAGausPymLevel *)level_a ACol:(long)ca ARow:(long)ra Abpr:(size_t)bpra Abpx:(size_t)bpxa inColorSpace:(cs_t)cs {
     double kernel[] = {0.0625, 0.25, 0.425, 0.25, 0.0625};

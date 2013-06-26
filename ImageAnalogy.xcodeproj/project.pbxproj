@@ -121,8 +121,8 @@
 				4F6EBC20177AE99D00E51C3F /* Features */,
 				4F6EBC1B177AE7F400E51C3F /* Color Space */,
 				4F6EBC0C177A201300E51C3F /* Algorithms */,
-				4F6EBC0B1779F93100E51C3F /* Image Viewer */,
 				4F6EBC0A1779F92800E51C3F /* Main */,
+				4F6EBC0B1779F93100E51C3F /* Image Viewer */,
 				4F302FE017685C19007788FA /* Supporting Files */,
 			);
 			path = ImageAnalogy;

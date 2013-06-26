@@ -162,51 +162,36 @@
             IAGausPymLevel *thisLevelB = [self.pymB objectAtIndex:l];
             IAGausPymLevel *thisLevelA = [self.pymA objectAtIndex:l];
             
+            IAGausPymLevel *nextLevelB = nil;
+            IAGausPymLevel *nextLevelA = nil;
+            
+            BOOL lastLevel = NO;
+            
+            if (l < [[self.levelInput stringValue] intValue]-1) {
+                nextLevelB = [self.pymB objectAtIndex:l+1];
+                nextLevelA = [self.pymA objectAtIndex:l+1];
+                lastLevel = YES;
+            }
+            
             IAGausPymLevel *thisLevelA2 = [self.pymA2 objectAtIndex:l];
             const uint8_t* a2_bytes = [thisLevelA2.levelData bytes];
             uint8_t* b2_bytes = malloc(thisLevelB.height*thisLevelB.width*thisLevelB.bpx);
             
-            // start iter each pixel in B
+            // iter each pixel in B
             for (long colb=0; colb < thisLevelB.width; colb++) {
                 for (long rowb=0; rowb < thisLevelB.height; rowb++) {
-                    
-                    double bestdist = 0;
-                    long bestcol;
-                    long bestrow;
-                    
-                    for (long cola=0; cola < thisLevelA.width; cola++) {
-                        for (long rowa=0; rowa < thisLevelA.height; rowa++) {
-                            // calc each pixel in A, the dist to the pixel in B
-                            double dist = 0;
-                            if (l < [[self.levelInput stringValue] intValue]-1) {
-                                double dist1 = [BestLocBruteForce neighbourDist5ForB:thisLevelB BCol:colb BRow:rowb Bbpr:thisLevelB.bpr Bbpx:thisLevelB.bpx AndA:thisLevelA ACol:cola ARow:rowa Abpr:thisLevelA.bpr Abpx:thisLevelA.bpx inColorSpace:(cs_t)self.colorSpaceChooser.indexOfSelectedItem];
-                                IAGausPymLevel *nextLevelB = [self.pymB objectAtIndex:l+1];
-                                IAGausPymLevel *nextLevelA = [self.pymA objectAtIndex:l+1];
-                                double dist2 = [BestLocBruteForce neighbourDist3ForB:nextLevelB BCol:colb/2 BRow:rowb/2 Bbpr:nextLevelB.bpr Bbpx:nextLevelB.bpx AndA:nextLevelA ACol:cola/2 ARow:rowa/2 Abpr:nextLevelA.bpr Abpx:nextLevelA.bpx inColorSpace:(cs_t)self.colorSpaceChooser.indexOfSelectedItem];
-                                dist = dist1 + lw*lw*dist2;
-                            }
-                            else {
-                                dist = [BestLocBruteForce neighbourDist5ForB:thisLevelB BCol:colb BRow:rowb Bbpr:thisLevelB.bpr Bbpx:thisLevelB.bpx AndA:thisLevelA ACol:cola ARow:rowa Abpr:thisLevelA.bpr Abpx:thisLevelA.bpx inColorSpace:(cs_t)self.colorSpaceChooser.indexOfSelectedItem];
-                            }
-                            if ((dist < bestdist) || ((cola==0) && (rowa==0))) {
-                                bestdist = dist;
-                                bestcol = cola;
-                                bestrow = rowa;
-                            }
-                        // end calc bestdist
-                        }
-                    }
-                    
+                    // brute force calc best match location
+                    result_bf *r = [BestLocBruteForce findBestLocationThisLevelB:thisLevelB thisLevelA:thisLevelA nextLevelB:nextLevelB nextLevelA:nextLevelA colb:colb rowb:rowb isLastLevel:lastLevel withLevelWeight:lw inColorSpace:(cs_t)self.colorSpaceChooser.indexOfSelectedItem];
                     // copy from A' to B'
-                    const uint8_t* a2_pixel = &a2_bytes[bestrow*thisLevelB.bpr+bestcol*thisLevelB.bpx];
+                    const uint8_t* a2_pixel = &a2_bytes[r->bestrow*thisLevelB.bpr+r->bestcol*thisLevelB.bpx];
                     uint8_t* b2_pixel = &b2_bytes[rowb*thisLevelB.bpr+colb*thisLevelB.bpx];
                     for (int pp=0; pp<thisLevelB.bpx; pp++) {
                         b2_pixel[pp] = a2_pixel[pp];
                     }
                 }
-            // end iter each B pixel
             }
             
+            // copy this level's result into result pyramid
             NSData *b2data = [NSData dataWithBytes:b2_bytes length:thisLevelB.height*thisLevelB.width*thisLevelB.bpx];
             IAGausPymLevel *thisLevelB2 = [IAGausPymLevel new];
             thisLevelB2.levelData = b2data;
@@ -215,7 +200,8 @@
             thisLevelB2.bpr = thisLevelB.bpr;
             thisLevelB2.bpx = thisLevelB.bpx;
             [b2pym insertObject:thisLevelB2 atIndex:0];
-            [self.progressBar incrementBy:25.0];
+            // increase progress bar
+            [self.progressBar incrementBy:100.0/([[self.levelInput stringValue] intValue])];
         } // end iter level
     }
     else if (self.typeChooser.indexOfSelectedItem == AlgoAshikhmin) {
