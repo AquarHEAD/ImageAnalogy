@@ -10,9 +10,9 @@
 
 @implementation BestLocBruteForce
 
-+ (result_bf *)findBestLocationThisLevelB:(IAGausPymLevel *)thisLevelB thisLevelA:(IAGausPymLevel *)thisLevelA nextLevelB:(IAGausPymLevel *)nextLevelB nextLevelA:(IAGausPymLevel *)nextLevelA colb:(long)colb rowb:(long)rowb isLastLevel:(BOOL)lastLevel withLevelWeight:(double)lw inColorSpace:(cs_t)cs {
-    result_bf *r = malloc(sizeof(result_bf));
-    r->bestdist = 0;
++ (algo_result *)findBestLocationThisLevelB:(IAGausPymLevel *)thisLevelB thisLevelA:(IAGausPymLevel *)thisLevelA nextLevelB:(IAGausPymLevel *)nextLevelB nextLevelA:(IAGausPymLevel *)nextLevelA colb:(long)colb rowb:(long)rowb isLastLevel:(BOOL)lastLevel withLevelWeight:(double)lw inColorSpace:(cs_t)cs {
+    algo_result *r = malloc(sizeof(algo_result));
+    r->bestdist = -1;
     
     for (long cola=0; cola < thisLevelA.width; cola++) {
         for (long rowa=0; rowa < thisLevelA.height; rowa++) {
@@ -26,7 +26,7 @@
             else {
                 dist = [BestLocBruteForce neighbourDist5ForB:thisLevelB BCol:colb BRow:rowb Bbpr:thisLevelB.bpr Bbpx:thisLevelB.bpx AndA:thisLevelA ACol:cola ARow:rowa Abpr:thisLevelA.bpr Abpx:thisLevelA.bpx inColorSpace:cs];
             }
-            if ((dist < r->bestdist) || ((cola==0) && (rowa==0))) {
+            if ((dist < r->bestdist) || (r->bestdist == -1)) {
                 r->bestdist = dist;
                 r->bestcol = cola;
                 r->bestrow = rowa;

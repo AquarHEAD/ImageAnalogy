@@ -24,6 +24,7 @@
 		4F6EBC1E177AE81C00E51C3F /* IAColorSpace.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F6EBC1D177AE81C00E51C3F /* IAColorSpace.m */; };
 		4F6EBC23177AE9B800E51C3F /* IAGausPymLevel.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F6EBC22177AE9B800E51C3F /* IAGausPymLevel.m */; };
 		4F6EBC26177AEE5400E51C3F /* IAAlgorithms.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F6EBC25177AEE5400E51C3F /* IAAlgorithms.m */; };
+		4F7CDA54177C50990089AEE9 /* Location.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F7CDA53177C50990089AEE9 /* Location.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -59,6 +60,8 @@
 		4F6EBC22177AE9B800E51C3F /* IAGausPymLevel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IAGausPymLevel.m; sourceTree = "<group>"; };
 		4F6EBC24177AEE5400E51C3F /* IAAlgorithms.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = IAAlgorithms.h; path = Algorithms/IAAlgorithms.h; sourceTree = "<group>"; };
 		4F6EBC25177AEE5400E51C3F /* IAAlgorithms.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = IAAlgorithms.m; path = Algorithms/IAAlgorithms.m; sourceTree = "<group>"; };
+		4F7CDA52177C50990089AEE9 /* Location.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Location.h; sourceTree = "<group>"; };
+		4F7CDA53177C50990089AEE9 /* Location.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Location.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -118,6 +121,8 @@
 		4F302FDF17685C19007788FA /* ImageAnalogy */ = {
 			isa = PBXGroup;
 			children = (
+				4F7CDA52177C50990089AEE9 /* Location.h */,
+				4F7CDA53177C50990089AEE9 /* Location.m */,
 				4F6EBC20177AE99D00E51C3F /* Features */,
 				4F6EBC1B177AE7F400E51C3F /* Color Space */,
 				4F6EBC0C177A201300E51C3F /* Algorithms */,
@@ -269,6 +274,7 @@
 				4F6EBC1E177AE81C00E51C3F /* IAColorSpace.m in Sources */,
 				4F6EBC23177AE9B800E51C3F /* IAGausPymLevel.m in Sources */,
 				4F6EBC26177AEE5400E51C3F /* IAAlgorithms.m in Sources */,
+				4F7CDA54177C50990089AEE9 /* Location.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

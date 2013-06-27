@@ -10,9 +10,11 @@
 #import "IAImageViewer.h"
 #import "IAGausPymLevel.h"
 #import "IAAlgorithms.h"
+#import "Location.h"
 
 @interface IADocument()
 
+# pragma mark - UI Settings
 @property (weak) IBOutlet NSPopUpButton *typeChooser;
 @property (weak) IBOutlet NSTextField *levelWeightInput;
 @property (weak) IBOutlet NSButton *use2LevelButton;
@@ -22,9 +24,11 @@
 @property (weak) IBOutlet NSButton *useLuminRemap;
 @property (weak) IBOutlet NSTextField *levelInput;
 
+# pragma mark - Analogy Button
 @property (weak) IBOutlet NSButton *analogyButton;
 @property (weak) IBOutlet NSProgressIndicator *progressBar;
 
+# pragma mark - Images
 @property (strong, nonatomic) NSURL *imgaurl;
 @property (strong, nonatomic) IAImageViewer *viewerA;
 @property (strong, nonatomic) NSArray *pymA;
@@ -46,43 +50,32 @@
 
 @implementation IADocument
 
-- (id)init
-{
-    self = [super init];
-    if (self) {
-    }
-    return self;
-}
+# pragma mark - Default Functions
 
 - (void)awakeFromNib {
     [self.typeChooser addItemsWithTitles:@[@"Brute Force", @"Ashikhmin", @"ANN", @"Ash + ANN"]];
     [self.colorSpaceChooser addItemsWithTitles:@[@"RGB", @"YIQ"]];
 }
 
-- (NSString *)windowNibName
-{
+- (NSString *)windowNibName {
     return @"IADocument";
 }
 
-- (void)windowControllerDidLoadNib:(NSWindowController *)aController
-{
+- (void)windowControllerDidLoadNib:(NSWindowController *)aController {
     [super windowControllerDidLoadNib:aController];
 }
 
-+ (BOOL)autosavesInPlace
-{
++ (BOOL)autosavesInPlace {
     return YES;
 }
 
-- (NSData *)dataOfType:(NSString *)typeName error:(NSError **)outError
-{
+- (NSData *)dataOfType:(NSString *)typeName error:(NSError **)outError {
     NSException *exception = [NSException exceptionWithName:@"UnimplementedMethod" reason:[NSString stringWithFormat:@"%@ is unimplemented", NSStringFromSelector(_cmd)] userInfo:nil];
     @throw exception;
     return nil;
 }
 
-- (BOOL)readFromData:(NSData *)data ofType:(NSString *)typeName error:(NSError **)outError
-{
+- (BOOL)readFromData:(NSData *)data ofType:(NSString *)typeName error:(NSError **)outError {
     NSException *exception = [NSException exceptionWithName:@"UnimplementedMethod" reason:[NSString stringWithFormat:@"%@ is unimplemented", NSStringFromSelector(_cmd)] userInfo:nil];
     @throw exception;
     return YES;
@@ -154,59 +147,80 @@
 
 - (IBAction)doAnalogy:(id)sender {
     NSMutableArray *b2pym = [NSMutableArray new];
-    if (self.typeChooser.indexOfSelectedItem == AlgoBruteForce) {
-        double lw = [[self.levelWeightInput stringValue] doubleValue];
+    double lw = [[self.levelWeightInput stringValue] doubleValue];
+    cs_t cs = (cs_t)self.colorSpaceChooser.indexOfSelectedItem;
+    BOOL ash2Level = self.use2LevelButton.state == NSOnState;
+    NSArray *old_s = nil;
+    
+    for (int l=[[self.levelInput stringValue] intValue]-1; l>=0; l--) {
+        // start iter level
+        IAGausPymLevel *thisLevelB = [self.pymB objectAtIndex:l];
+        IAGausPymLevel *thisLevelA = [self.pymA objectAtIndex:l];
         
-        for (int l=[[self.levelInput stringValue] intValue]-1; l>=0; l--) {
-            // start iter level
-            IAGausPymLevel *thisLevelB = [self.pymB objectAtIndex:l];
-            IAGausPymLevel *thisLevelA = [self.pymA objectAtIndex:l];
-            
-            IAGausPymLevel *nextLevelB = nil;
-            IAGausPymLevel *nextLevelA = nil;
-            
-            BOOL lastLevel = NO;
-            
-            if (l < [[self.levelInput stringValue] intValue]-1) {
-                nextLevelB = [self.pymB objectAtIndex:l+1];
-                nextLevelA = [self.pymA objectAtIndex:l+1];
-                lastLevel = YES;
-            }
-            
-            IAGausPymLevel *thisLevelA2 = [self.pymA2 objectAtIndex:l];
-            const uint8_t* a2_bytes = [thisLevelA2.levelData bytes];
-            uint8_t* b2_bytes = malloc(thisLevelB.height*thisLevelB.width*thisLevelB.bpx);
-            
-            // iter each pixel in B
-            for (long colb=0; colb < thisLevelB.width; colb++) {
-                for (long rowb=0; rowb < thisLevelB.height; rowb++) {
-                    // brute force calc best match location
-                    result_bf *r = [BestLocBruteForce findBestLocationThisLevelB:thisLevelB thisLevelA:thisLevelA nextLevelB:nextLevelB nextLevelA:nextLevelA colb:colb rowb:rowb isLastLevel:lastLevel withLevelWeight:lw inColorSpace:(cs_t)self.colorSpaceChooser.indexOfSelectedItem];
-                    // copy from A' to B'
-                    const uint8_t* a2_pixel = &a2_bytes[r->bestrow*thisLevelB.bpr+r->bestcol*thisLevelB.bpx];
-                    uint8_t* b2_pixel = &b2_bytes[rowb*thisLevelB.bpr+colb*thisLevelB.bpx];
-                    for (int pp=0; pp<thisLevelB.bpx; pp++) {
-                        b2_pixel[pp] = a2_pixel[pp];
-                    }
+        IAGausPymLevel *nextLevelB = nil;
+        IAGausPymLevel *nextLevelA = nil;
+        
+        BOOL lastLevel = NO;
+        
+        if (l < [[self.levelInput stringValue] intValue]-1) {
+            nextLevelB = [self.pymB objectAtIndex:l+1];
+            nextLevelA = [self.pymA objectAtIndex:l+1];
+            lastLevel = YES;
+        }
+        
+        IAGausPymLevel *thisLevelA2 = [self.pymA2 objectAtIndex:l];
+        const uint8_t* a2_bytes = [thisLevelA2.levelData bytes];
+        uint8_t* b2_bytes = malloc(thisLevelB.height*thisLevelB.width*thisLevelB.bpx);
+        
+        NSMutableArray *this_s = [NSMutableArray new];
+        for (long t=0; t<thisLevelB.width*thisLevelB.height*sizeof(long); t++) {
+            Location *l = [Location new];
+            l.row = -1;
+            l.col = -1;
+            [this_s addObject:l];
+        }
+        
+        // iter each pixel in B
+        for (long colb=0; colb < thisLevelB.width; colb++) {
+            for (long rowb=0; rowb < thisLevelB.height; rowb++) {
+                // use algorithms
+                algo_result *r = nil;
+                if (self.typeChooser.indexOfSelectedItem == AlgoBruteForce) {
+                    r = [BestLocBruteForce findBestLocationThisLevelB:thisLevelB thisLevelA:thisLevelA nextLevelB:nextLevelB nextLevelA:nextLevelA colb:colb rowb:rowb isLastLevel:lastLevel withLevelWeight:lw inColorSpace:cs];
+                }
+                else if (self.typeChooser.indexOfSelectedItem == AlgoAshikhmin) {
+                    r = [BestLocAshikhmin findBestLocationThisLevelB:thisLevelB thisLevelA:thisLevelA nextLevelB:nextLevelB nextLevelA:nextLevelA colb:colb rowb:rowb isLastLevel:lastLevel useTwoLevel:ash2Level withThisS:this_s andLastS:old_s withLevelWeight:lw inColorSpace:cs];
+                }
+                
+                // copy from A' to B'
+                const uint8_t* a2_pixel = &a2_bytes[r->bestrow*thisLevelB.bpr+r->bestcol*thisLevelB.bpx];
+                uint8_t* b2_pixel = &b2_bytes[rowb*thisLevelB.bpr+colb*thisLevelB.bpx];
+                for (int pp=0; pp<thisLevelB.bpx; pp++) {
+                    b2_pixel[pp] = a2_pixel[pp];
                 }
             }
-            
-            // copy this level's result into result pyramid
-            NSData *b2data = [NSData dataWithBytes:b2_bytes length:thisLevelB.height*thisLevelB.width*thisLevelB.bpx];
-            IAGausPymLevel *thisLevelB2 = [IAGausPymLevel new];
-            thisLevelB2.levelData = b2data;
-            thisLevelB2.width = thisLevelB.width;
-            thisLevelB2.height = thisLevelB.height;
-            thisLevelB2.bpr = thisLevelB.bpr;
-            thisLevelB2.bpx = thisLevelB.bpx;
-            [b2pym insertObject:thisLevelB2 atIndex:0];
-            // increase progress bar
-            [self.progressBar incrementBy:100.0/([[self.levelInput stringValue] intValue])];
-        } // end iter level
-    }
-    else if (self.typeChooser.indexOfSelectedItem == AlgoAshikhmin) {
+        }
         
-    }
+        // copy this level's result into result pyramid
+        NSData *b2data = [NSData dataWithBytes:b2_bytes length:thisLevelB.height*thisLevelB.width*thisLevelB.bpx];
+        IAGausPymLevel *thisLevelB2 = [IAGausPymLevel new];
+        thisLevelB2.levelData = b2data;
+        thisLevelB2.width = thisLevelB.width;
+        thisLevelB2.height = thisLevelB.height;
+        thisLevelB2.bpr = thisLevelB.bpr;
+        thisLevelB2.bpx = thisLevelB.bpx;
+        [b2pym insertObject:thisLevelB2 atIndex:0];
+        
+        // increase progress bar
+        [self.progressBar incrementBy:100.0/([[self.levelInput stringValue] intValue])];
+        
+        // exchange old_s <-> this_s
+        if (self.typeChooser.indexOfSelectedItem == AlgoAshikhmin) {
+            old_s = this_s;
+        }
+    } // end iter level
+    
+    
     self.viewerB2 = [IAImageViewer new];
     self.viewerB2.pyramid = [b2pym copy];
     self.viewerB2.image_tag = @"B'";
