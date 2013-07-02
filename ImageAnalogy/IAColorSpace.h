@@ -7,6 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "IAGausPymLevel.h"
 
 typedef enum {
     IAColorSpaceRGB = 0,
@@ -16,5 +17,9 @@ typedef enum {
 @interface IAColorSpace : NSObject
 
 + (double)pixelDistOfB:(const uint8_t *)pixelb AndA:(const uint8_t *)pixela InColorSpace:(cs_t)cs;
+
++ (IAGausPymLevel *)fromRGBtoYIQ:(IAGausPymLevel *)level;
+
++ (IAGausPymLevel *)fromYIQtoRGB:(IAGausPymLevel *)level;
 
 @end

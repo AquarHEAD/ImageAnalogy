@@ -27,6 +27,7 @@
 # pragma mark - Analogy Button
 @property (weak) IBOutlet NSButton *analogyButton;
 @property (weak) IBOutlet NSProgressIndicator *progressBar;
+@property (weak) IBOutlet NSTextField *timeField;
 
 # pragma mark - Images
 @property (strong, nonatomic) NSURL *imgaurl;
@@ -146,6 +147,7 @@
 # pragma mark - Analogy action
 
 - (IBAction)doAnalogy:(id)sender {
+    NSDate *start = [NSDate date];
     NSMutableArray *b2pym = [NSMutableArray new];
     double lw = [[self.levelWeightInput stringValue] doubleValue];
     cs_t cs = (cs_t)self.colorSpaceChooser.indexOfSelectedItem;
@@ -157,6 +159,11 @@
         IAGausPymLevel *thisLevelB = [self.pymB objectAtIndex:l];
         IAGausPymLevel *thisLevelA = [self.pymA objectAtIndex:l];
         
+        if (self.colorSpaceChooser.indexOfSelectedItem == IAColorSpaceYIQ) {
+            thisLevelB = [IAColorSpace fromRGBtoYIQ:thisLevelB];
+            thisLevelA = [IAColorSpace fromRGBtoYIQ:thisLevelA];
+        }
+        
         IAGausPymLevel *nextLevelB = nil;
         IAGausPymLevel *nextLevelA = nil;
         
@@ -166,9 +173,16 @@
             nextLevelB = [self.pymB objectAtIndex:l+1];
             nextLevelA = [self.pymA objectAtIndex:l+1];
             lastLevel = YES;
+            if (self.colorSpaceChooser.indexOfSelectedItem == IAColorSpaceYIQ) {
+                nextLevelB = [IAColorSpace fromRGBtoYIQ:nextLevelB];
+                nextLevelA = [IAColorSpace fromRGBtoYIQ:nextLevelA];
+            }
         }
         
         IAGausPymLevel *thisLevelA2 = [self.pymA2 objectAtIndex:l];
+        if (self.colorSpaceChooser.indexOfSelectedItem == IAColorSpaceYIQ) {
+            thisLevelA2 = [IAColorSpace fromRGBtoYIQ:thisLevelA2];
+        }
         const uint8_t* a2_bytes = [thisLevelA2.levelData bytes];
         uint8_t* b2_bytes = malloc(thisLevelB.height*thisLevelB.width*thisLevelB.bpx);
         
@@ -217,6 +231,9 @@
         thisLevelB2.height = thisLevelB.height;
         thisLevelB2.bpr = thisLevelB.bpr;
         thisLevelB2.bpx = thisLevelB.bpx;
+        if (self.colorSpaceChooser.indexOfSelectedItem == IAColorSpaceYIQ) {
+            thisLevelB2 = [IAColorSpace fromYIQtoRGB:thisLevelB2];
+        }
         [b2pym insertObject:thisLevelB2 atIndex:0];
         
         // increase progress bar
@@ -228,7 +245,8 @@
         }
     } // end iter level
     
-    
+    NSTimeInterval timeInterval = [start timeIntervalSinceNow];
+    self.timeField.stringValue = [NSString stringWithFormat:@"%f s", -timeInterval];
     self.viewerB2 = [IAImageViewer new];
     self.viewerB2.pyramid = [b2pym copy];
     self.viewerB2.image_tag = @"B'";
