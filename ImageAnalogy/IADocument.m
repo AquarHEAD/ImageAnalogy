@@ -191,6 +191,14 @@
                 else if (self.typeChooser.indexOfSelectedItem == AlgoAshikhmin) {
                     r = [BestLocAshikhmin findBestLocationThisLevelB:thisLevelB thisLevelA:thisLevelA nextLevelB:nextLevelB nextLevelA:nextLevelA colb:colb rowb:rowb isLastLevel:lastLevel useTwoLevel:ash2Level withThisS:this_s andLastS:old_s withLevelWeight:lw inColorSpace:cs];
                 }
+                else if (self.typeChooser.indexOfSelectedItem == AlgoANN) {
+                    if ((colb < 2) || (colb > thisLevelB.width-3) || (rowb < 2) || (rowb > thisLevelB.height-3)) {
+                        r = [BestLocBruteForce findBestLocationThisLevelB:thisLevelB thisLevelA:thisLevelA nextLevelB:nextLevelB nextLevelA:nextLevelA colb:colb rowb:rowb isLastLevel:lastLevel withLevelWeight:lw inColorSpace:cs];
+                    }
+                    else {
+                        
+                    }
+                }
                 
                 // copy from A' to B'
                 const uint8_t* a2_pixel = &a2_bytes[r->bestrow*thisLevelB.bpr+r->bestcol*thisLevelB.bpx];
